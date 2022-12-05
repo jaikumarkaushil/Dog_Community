@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-6oq@keh_kwq+wzs%i#7x*1)bm25k1x5w!hq0^kn&zc!hw&0byw
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ['https://dogs-community.azurewebsites.net', 'http://127.0.0.1:8000']
 
 # Application definition
 
