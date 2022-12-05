@@ -4,7 +4,7 @@
 {% load static %}
 <div id="report-dogs">
     <section id="hero" class="d-flex align-items-center position-relative">
-        <img class="hero-img"  src="{%static "assets/img/unsplash_hero_aboutus.png" %}" alt="Image">
+        <img class="hero-img"  src="{% if 'missing' in request.path %}{% static "assets/img/justin-veenema-NH1d0xX6Ldk-unsplash.jpg" %}{% else %}{% static "assets/img/michael-kucharski-AZBMRWyfN6c-unsplash.jpg" %}{% endif %}" %}" alt="Image">
         <div class="carousel-caption">
             <div class="container">
                 <div class="row">
@@ -52,7 +52,7 @@
                             <div class="card-body mt-1 mb-2">
                                 <p class="card-text text-center mt-2 mx-2"><b>Age</b>: {{dog.dog_age}} years</p>
                                 <p class="card-text text-center mt-2 mx-2"><b>Color</b>: {{dog.dog_color}}</p>      
-                                {% if 'missing' in request.path and found_at %}<p class="card-text text-center mt-2 mx-2"><b>Found at</b>: {{found_at}}</p>{% endif %}                    
+                                {% if dog.found_at %}<p class="card-text text-center mt-2 mx-2"><b>Found at</b>: {{dog.found_at}}</p>{% endif %}                    
                             </div>
                         </div>   
                     </div>

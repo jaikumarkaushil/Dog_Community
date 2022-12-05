@@ -91,7 +91,11 @@
     })
     $.fn.adoptButton = function() {
         var dog_q = $(this).attr("data-dog-id")
-        filterDogsByDog($(this), dog_q)
+        filterDogsByDog($(this), dog_q, '#adopt-form')
+    }
+    $.fn.adoptHomeButton = function() {
+        var dog_q = $(this).attr("data-dog-id")
+        filterDogsByDog($(this), dog_q, '#adopt-home-form')
     }
     
     function filterDogsByBreed(that, breed){
@@ -131,16 +135,15 @@
         })
     }
 
-    function filterDogsByDog(that, dogId){
+    function filterDogsByDog(that, dogId, elementId){
         var token = $("input[name=csrfmiddlewaretoken]").val()
-        $("#adopt-form").modal('show')
-
+        $(elementId).modal('show')
         // Send the data using post
         $.ajax({
             url: $(that).attr("data-url")+ "/list",
             data: {
                 action: "get_dog_data",
-                dog_id: dogId,
+                dog_id: parseInt(dogId),
                 CSRF: token
             },
             headers: {
@@ -198,6 +201,16 @@
         $("#meetup-form").modal('show')
         $("#event_id").val(event_id_q)
     }
+    $.fn.scrollToId = function(elementId) {
+        console.log(elementId)
+        window.scrollTo({
+            behavior: 'smooth',
+            top:
+                document.getElementById(elementId).getBoundingClientRect().top -
+                document.body.getBoundingClientRect().top -
+                90,
+        })
+    }
 
 //    $("#formSuccess").addEventListener('change', function(event) {
 //         event.target.val("test")
@@ -211,20 +224,6 @@
     }
 
     $.fn.formSuccess = function(id, action, data, user_email,user_name) {
-        console.log(id,action,data, user_email)
-        // sending email to the user for confirmation
-        // data: {
-        //     "email" : `${user_email}`,
-            // "email_description": `Hello,\n \
-            //     Hope you are doing well! Thank you for registering for this meetup. Please be polite and courteous with other while enjoying with your dogs. Also, please take care of safety and cleanliness.\n \
-            //     Park Location - ${data.event_location}\n \
-            //     Starts at - ${data.event_time} \n \
-            //     Duration - ${data.event_duration} hours \n \
-            //     Hope to see you there! \n \n \
-            //     Thanks and Regards\n \
-            //     Dogs Community`,
-        //     "email_subject": `Community meet at ${data.event_location}`
-        // },
         var mailBody = {
             "email": `${user_email}`,
             "email_description": "demo-test",
@@ -305,19 +304,18 @@
             mailBody['email_subject'] = `Rescued dog from ${data.event_location}`
         }
         var url = 'https://prod-12.canadacentral.logic.azure.com:443/workflows/83e44d334b814c69a103323e596dd428/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VmVmf4Q-slQQW7i2sibJUhw4-fblPmmHBZ-mAAHYgNg'
-        console.log(mailBody)
-        // $.ajax({
-        //     url: url,
-        //     data: JSON.stringify(mailBody),
-        //     method:'POST',
-        //     contentType: 'application/json',
-        //     success: function( data ) {
-        //         console.log(data + "success")
-        //     },
-        //     error: function (request, status, error) {
-        //         console.log(request.responseText);
-        //     }
-        // })
+        $.ajax({
+            url: url,
+            data: JSON.stringify(mailBody),
+            method:'POST',
+            contentType: 'application/json',
+            success: function( data ) {
+                console.log(data + "success")
+            },
+            error: function (request, status, error) {
+                console.log(request.responseText);
+            }
+        })
     }
 
 })(jQuery);
