@@ -19,11 +19,16 @@ from django.http import HttpResponse
 def home_view(request):
     context = {}
     contact_form = ContactUsForm(request.POST or None)
+    adoption_dog_form = AdoptionDogDetailsForm(request.POST or None)
+    adoption_user_form = UserDetailsForm(request.POST or None)
+    context['adoption_dog_form'] = adoption_dog_form
+    context['adoption_user_form'] = adoption_user_form
     context['contact_form'] = contact_form
+    context['all_dogs'] = Dogs.objects.filter(is_featured=True, is_adoption_ready=True, is_adopted=False)
     missing_dogs =[]
     for dog_r in Reports.objects.filter(category='missing'):
         for dog in Dogs.objects.filter(dog_id=dog_r.dog_id):
-            context['found_at'] = dog_r.last_known_location
+            setattr(dog, 'found_at',dog_r.last_known_location)
             missing_dogs.append(dog)
     context['missing_dogs'] = missing_dogs
     if('action-contact' in request.POST):
@@ -59,7 +64,7 @@ def report_dogs_view(request, type):
     
     for dog_r in Reports.objects.filter(category=type):
         for dog in Dogs.objects.filter(dog_id=dog_r.dog_id):
-            context['found_at'] = dog_r.last_known_location
+            setattr(dog, 'found_at',dog_r.last_known_location)
             dog_a.append(dog)
     context['filtered_dogs'] = dog_a
     
@@ -166,6 +171,7 @@ def adoption_view(request):
     context['adoption_dog_form'] = adoption_dog_form
     context['adoption_user_form'] = adoption_user_form
     context['all_breeds'] = Breed.objects.all()
+    context['all_dogs'] = Dogs.objects.filter(is_featured=True, is_adoption_ready=True, is_adopted=False)
     context['filtered_dogs'] = request.session.get(
         'filtered_dogs',
         Dogs.objects.filter(is_featured=True, is_adoption_ready=True, is_adopted=False)
@@ -196,7 +202,6 @@ def adoption_view(request):
 
 def success_view(request, user_id, id):
     context={}
-    print(id,user_id,request.path)
     data = {}
     user_email = ''
     user_name = ''
@@ -260,7 +265,6 @@ def adoption_dog_list(request):
     context['all_breeds'] = Breed.objects.all()
     context['filtered_dogs'] = Dogs.objects.filter(is_featured=True, is_adoption_ready=True, is_adopted=False)
     if(request.POST.get('action') == "filter_dogs"):
-        print("i am coming")
         filtered_dogs = Dogs.objects.filter(is_adoption_ready=True, breed_id=query_breed_id)
         template=  get_template('adoption.html')
         context['filtered_dogs'] = filtered_dogs
@@ -282,17 +286,22 @@ def adoption_dog_list(request):
         json_data = json.dumps({'breed_id': breed_id})
         return HttpResponse(json_data, content_type="application/json")
     elif(request.POST.get('action') == "get_dog_data"):
-        dog_id = request.POST.get('dog_id')
-        dog_filter = Dogs.objects.filter(is_adoption_ready=True, is_adopted=False, dog_id=dog_id)
-        selected_dog_detail = {}
-        for dog in dog_filter:
-            selected_dog_detail = dog.dog_name
+        dog_id = int(request.POST.get('dog_id'))
+        print(dog_id)
+        print(type(dog_id))
+        if dog_id==-1:
+            selected_dog_detail = ''
+        else:
+            dog_filter = Dogs.objects.filter(is_adoption_ready=True, is_adopted=False, dog_id=dog_id)
+            selected_dog_detail = ''
+            for dog in dog_filter:
+                selected_dog_detail = dog.dog_name
         json_data = json.dumps({'dogName': selected_dog_detail})
         return HttpResponse(json_data, content_type="application/json")
 
     else:
         return HttpResponse()
 
-def contact_view(request):
+# def contact_view(request):
 
-    return render(request, "contact.html")
+#     return render(request, "contact.html")

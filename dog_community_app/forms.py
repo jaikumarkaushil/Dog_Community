@@ -48,6 +48,7 @@ class UserDetailsForm(forms.ModelForm):
 
 class AdoptionDogDetailsForm(forms.ModelForm):
     class Meta:
+        # dog_name = forms.ChoiceField(choices=[(t,t) for t in Dogs.objects.values_list('dog_name', flat=True).distinct()])
         model = Dogs
         fields = [
             'dog_name'
@@ -55,8 +56,9 @@ class AdoptionDogDetailsForm(forms.ModelForm):
         widgets = {
             'dog_name': forms.TextInput(attrs={
                 'placeholder': "Dog's Name",
-                'class': 'form-control my-2'
-            }),
+                'class': 'form-control my-2',
+                'list': 'dogs_list'
+            })
         }
 class ReportDogDetails(forms.ModelForm):
     class Meta:

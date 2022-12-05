@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Carousel Start -->
-<div class="container-fluid p-0 mb-5">
+<div class="container-fluid p-0">
     <section id="header-carousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -11,18 +11,51 @@
                 <div class="carousel-caption">
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-lg-7 pt-5">
+                            <div class="col-lg-7 pt-5"> 
                                 <h1 class="display-4 text-white mb-3 animated slideInDown">Let's Change The World With Humanity</h1>
                                 <p class="fs-5 text-white-50 mb-5 animated slideInDown">You can make the change too by helping us in this amazing journey</p>
-                                <a class="btn btn-primary py-2 px-3 animated slideInDown" href="">
+                                <button onclick="$(this).adoptHomeButton();" data-dog-id="-1" data-url={%url 'adoption'%} id="adopt-button" class="btn btn-primary py-2 px-3 animated slideInDown">
                                     Adopt a dog
                                     <div class="d-inline-flex btn-sm-square bg-white text-primary rounded-circle ms-2">
                                         <i class="fa fa-arrow-right"></i>
                                     </div>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="modal fade home-page" id="adopt-home-form" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form class="adopt-form" method="post" action="{% url 'adoption'%}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" >Adoption Details</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <datalist id="dogs_list">
+                                    {% for dog in all_dogs %}
+                                        <option value="{{dog.dog_name}}"/>
+                                    {% endfor %}
+                                </datalist>
+                                {% for field in adoption_dog_form%}
+                                    {{field}}
+                                    {{field.errors}}
+                                {% endfor%}
+                                {% for field in adoption_user_form%}
+                                    {{field}}
+                                    {{field.errors}}
+                                {% endfor%}
+                                <input type="hidden" name="action-adopt" value="action-adopt"/>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-primary d-block w-50" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    
                 </div>
             </div>
             <div class="carousel-item">
@@ -33,12 +66,12 @@
                             <div class="col-lg-7 pt-5">
                                 <h1 class="display-4 text-white mb-3 animated slideInDown">Let's Save More Lifes With Our Helping Hand</h1>
                                 <p class="fs-5 text-white-50 mb-5 animated slideInDown">Become part of our community to advance our society</p>
-                                <a class="btn btn-primary py-2 px-3 animated slideInDown" href="">
+                                <button onclick="$(this).scrollToId('what-we-do');" class="btn btn-primary py-2 px-3 animated slideInDown">
                                     What we do
                                     <div class="d-inline-flex btn-sm-square bg-white text-primary rounded-circle ms-2">
                                         <i class="fa fa-arrow-right"></i>
                                     </div>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -84,7 +117,7 @@
                             <div class="card-body mt-1 mb-2">
                                 <p class="card-text text-center mt-2 mx-2"><b>Age</b>: {{dog.dog_age}} years</p>
                                 <p class="card-text text-center mt-2 mx-2"><b>Color</b>: {{dog.dog_color}}</p>      
-                                {% if found_at %}<p class="card-text text-center mt-2 mx-2"><b>Found at</b>: {{found_at}}</p>{% endif %}                    
+                                {% if dog.found_at %}<p class="card-text text-center mt-2 mx-2"><b>Found at</b>: {{dog.found_at}}</p>{% endif %}                    
                             </div>
                         </div>   
                     </div>
@@ -140,7 +173,7 @@
 
 
 <!-- Service Start -->
-<div class="container-xxl py-5">
+<div class="container-xxl py-5" id="what-we-do">
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
             <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">What We Do</div>
