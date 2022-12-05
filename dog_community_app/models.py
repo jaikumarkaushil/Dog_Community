@@ -7,7 +7,7 @@ class Breed(models.Model):
     life_span = models.CharField(max_length=1000, default="")
     temperament = models.CharField(max_length=1000, default="")
     origin = models.CharField(max_length=1000, default="")
-    breed_image_path = models.ImageField(upload_to='images/breeds',default='images/default_event.jpg')
+    breed_image_path = models.ImageField(upload_to='images/breeds')
     breed_article = models.CharField(max_length=1024, default="")
     
     def __str__(self):
@@ -20,7 +20,7 @@ class Dogs(models.Model):
     dog_name = models.CharField(max_length=255)
     dog_color = models.CharField(max_length=255)
     dog_age = models.IntegerField()
-    dog_image = models.ImageField(upload_to='images/dogs',default='images/default_event.jpg')
+    dog_image = models.ImageField(upload_to='images/dogs')
     is_disable = models.BooleanField()
     disabilty = models.CharField(max_length=5000, blank=True)
     unique_identification = models.CharField(max_length=5000)
@@ -31,6 +31,7 @@ class Dogs(models.Model):
         return self.dog_name
 
 class EventSubscription(models.Model):
+    id = models.AutoField(primary_key=True)
     event = models.ForeignKey('Events', on_delete=models.DO_NOTHING)
     user = models.ForeignKey('User', on_delete=models.DO_NOTHING)
     
@@ -44,12 +45,13 @@ class Events(models.Model):
     event_duration = models.IntegerField()
     event_capacity = models.IntegerField()
     event_description = models.CharField(max_length=5000)
-    event_image = models.ImageField(upload_to='images/events',default='images/default_event.jpg')
+    event_image = models.ImageField(upload_to='images/events')
     
     def __str__(self):
         return self.event_location
 
 class Reports(models.Model):
+    id = models.AutoField(primary_key=True)
     dog = models.ForeignKey(Dogs, on_delete=models.DO_NOTHING)
     breed = models.ForeignKey(Breed, on_delete=models.DO_NOTHING)
     reporter = models.ForeignKey('User', on_delete=models.DO_NOTHING)
@@ -67,6 +69,7 @@ class User(models.Model):
         return self.user_name
 
 class Adoption(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     dog = models.ForeignKey(Dogs, on_delete=models.DO_NOTHING)
 
@@ -85,6 +88,7 @@ class Team(models.Model):
         return self.full_name
 
 class ContactUs(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     message = models.CharField(max_length = 2000)
@@ -93,6 +97,7 @@ class ContactUs(models.Model):
         return self.name
 
 class Newsletter(models.Model):
+    id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=255)
     
     def __str__(self):

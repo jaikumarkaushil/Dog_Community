@@ -279,11 +279,11 @@
                 Dogs Community\n
                 Phone Number: +1 555 454 1345\n
                 Address: 20 Knoxdale Crescent, K17 A5T`
-            mailBody['email_subject'] = `Missing dog from ${data.dog_last_location}`
+            mailBody['email_subject'] = `Missing dog`
         }
 
         if (action == 'report-stray'){
-            mailBody['email_description'] =  `Hello ${user_name},\n 
+            mailBody['email_description'] =  `<p>Hello ${user_name},\n 
 
                 Hope you are doing well! Thank you for taking this intiative. \n
                 We acknowledge that we have received this email. 
@@ -300,8 +300,8 @@
                 Thanks and Regards\n 
                 Dogs Community\n
                 Phone Number: +1 555 454 1345\n
-                Address: 20 Knoxdale Crescent, K17 A5T`
-            mailBody['email_subject'] = `Rescued dog from ${data.event_location}`
+                Address: 20 Knoxdale Crescent, K17 A5T</p>`
+            mailBody['email_subject'] = `Rescued dog`
         }
         var url = 'https://prod-12.canadacentral.logic.azure.com:443/workflows/83e44d334b814c69a103323e596dd428/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VmVmf4Q-slQQW7i2sibJUhw4-fblPmmHBZ-mAAHYgNg'
         $.ajax({
