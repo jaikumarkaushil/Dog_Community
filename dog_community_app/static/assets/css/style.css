@@ -6,6 +6,18 @@
     --dark: #001D23;
 }
 
+textarea,
+input[type]:not([type=search]):not([type=url]):not([type=hidden]):focus {
+  border-bottom: 3px solid var(--primary);
+}
+.form-control:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: var(--primary);
+  outline: 0;
+  box-shadow: 0 0 0 0 rgb(13 110 253 / 25%); 
+}
+
 .custom-primary-color {
     color: rgb(255,111,15) !important;
 }
@@ -14,6 +26,23 @@ div [class^="col-"]{
     padding-left:15px;
     padding-right:15px;
 }
+
+.parallax-adopt {
+  /* The image used */
+  background-image: url("../img/pauline-loroy-U3aF7hgUSrk-unsplash.jpg");
+  background-color: rgba(0, 0, 0, .6);
+  background-blend-mode: overlay;
+  /* Set a specific height */
+  min-height: 140px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  background-size: cover;
+}
+
 
 a {
     text-decoration: none;

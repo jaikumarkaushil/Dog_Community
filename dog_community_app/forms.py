@@ -55,7 +55,7 @@ class AdoptionDogDetailsForm(forms.ModelForm):
         ]
         widgets = {
             'dog_name': forms.TextInput(attrs={
-                'placeholder': "Dog's Name",
+                'placeholder': "Dog's Name (from the list)",
                 'class': 'form-control my-2',
                 'list': 'dogs_list'
             })
