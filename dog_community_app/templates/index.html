@@ -100,7 +100,7 @@
             <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">Have you seen me?</div>
             <h1 class="display-6 mb-5">Every dog deserves to live better</h1>
         </div>
-        <div class="row g-4 justify-content-center">
+        <div class="row g-4">
             {% for dog in missing_dogs %}
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="1s">
                 <div class="causes-item d-flex flex-column bg-white border-top border-5 border-primary rounded-top overflow-hidden h-100">
@@ -116,7 +116,8 @@
                             <h5 class="card-title text-center mt-3 mb-1">{{dog.dog_name}}</h5>
                             <div class="card-body mt-1 mb-2">
                                 <p class="card-text text-center mt-2 mx-2"><b>Age</b>: {{dog.dog_age}} years</p>
-                                <p class="card-text text-center mt-2 mx-2"><b>Color</b>: {{dog.dog_color}}</p>      
+                                <p class="card-text text-center mt-2 mx-2"><b>Color</b>: {{dog.dog_color}}</p> 
+                                <p class="card-text text-center mt-2 mx-2"><b>Identification</b>: {{dog.unique_identification}}</p>       
                                 {% if dog.found_at %}<p class="card-text text-center mt-2 mx-2"><b>Last known location</b>: {{dog.found_at}}</p>{% endif %}                    
                             </div>
                         </div>   

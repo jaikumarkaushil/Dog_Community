@@ -120,7 +120,6 @@
             method:'POST',
             success: function( data ) {
                 var adoption_list_element = $('<div />').append(data).find("#adoption-list").html()
-                console.log(adoption_list_element)
                 $('#adoption-list').html(adoption_list_element);
                 if(breed_id>0){
                     $('#featured-dogs-text').html('');
@@ -164,11 +163,11 @@
         filterDogsByBreed($(this), breed_id)
     });
 
-    $( "#search-breed-button").click(function( event ) {
-        event.preventDefault();
+    $.fn.filterSearch = function(){
         var token = $("input[name=csrfmiddlewaretoken]").val()
         var url = $(this).attr( "action" ) + "/list"
-        var breed = $("input[name=breed]").val()
+        var breed = $("input[name=breed-search]").val()
+        console.log(breed)
         
         $.ajax({
             url: url,
@@ -184,9 +183,15 @@
             success: function( data ) {
                 $("#filter-by-breed").val(data.breed_id);
                 $("#filter-by-breed").change();
-
             }
         })
+        
+    }
+
+    $( "#search-breed-button").click(function( event ) {
+        event.preventDefault();
+        filterSearch()
+
         window.scrollTo({
             behavior: 'smooth',
             top:

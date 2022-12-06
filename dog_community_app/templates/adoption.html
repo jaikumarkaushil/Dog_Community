@@ -46,12 +46,27 @@
             </div>
             <p class="mb-5 sub-heading">Check how adoption works by <a class="text-light-no-hover" href="#adoption-notes">clicking here</a>!</p>
             {% csrf_token %}
-            <select class="form-select" autoComplete="on" aria-label="Default select example" name="breed_id" id="filter-by-breed" action="{% url 'adoption' %}">
+            <div class="input-group">
+                <select class="input-group-prepend form-select w-25" autoComplete="on" aria-label="Default select example" name="breed_id" id="filter-by-breed" action="{% url 'adoption' %}">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select the breed</button>
+                    <div class="dropdown-menu">
+                        <option selected value="-1">Select the breed</option>
+                        {% for breed in all_breeds %}
+                        <option class="dropdown-item" value="{{breed.breed_id}}">{{breed.breed_name}}</option>
+                        {% comment %} <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a> {% endcomment %}
+                        {% endfor %}                        
+                    </div>
+                </select>
+                <div class="d-flex align-item-center w-75"><input list="breeds_list" onchange="$(this).filterSearch()" action="{% url 'adoption' %}" class="form-control text-center w-100" style="width: 160px;" type="text" id="breed-search" name="breed-search" placeholder="Enter the Breed"/></div>
+            </div>
+            {% comment %} <select class="form-select" autoComplete="on" aria-label="Default select example" name="breed_id" id="filter-by-breed" action="{% url 'adoption' %}">
                 <option selected value="-1">Select the breed</option>
                 {% for breed in all_breeds %}
                 <option value="{{breed.breed_id}}">{{breed.breed_name}}</option>
                 {% endfor %}
-            </select>
+            </select> {% endcomment %}
             <input type="hidden" name="action" value="filter_by_breed"/>
             
         </section>
