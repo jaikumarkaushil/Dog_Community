@@ -128,6 +128,8 @@
                 else{
                     $('#featured-dogs-text').html('Featured Dogs');
                 }
+                // document.getElementById("adopt-form")[0].reset();
+                
             },
             error: function (request, status, error) {
                 console.log(request.responseText);

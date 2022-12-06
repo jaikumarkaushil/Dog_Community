@@ -24,7 +24,7 @@ def home_view(request):
     context['adoption_dog_form'] = adoption_dog_form
     context['adoption_user_form'] = adoption_user_form
     context['contact_form'] = contact_form
-    context['all_dogs'] = Dogs.objects.filter(is_featured=True, is_adoption_ready=True, is_adopted=False)
+    context['all_dogs'] = Dogs.objects.filter(is_adoption_ready=True, is_adopted=False)
     missing_dogs =[]
     for dog_r in Reports.objects.filter(category='missing'):
         for dog in Dogs.objects.filter(dog_id=dog_r.dog_id):
@@ -93,11 +93,10 @@ def report_dogs_form_view(request, type):
                 # show snackbar if dog has already been reported
                 pass 
             else: 
-                print("dog validated")
                 dog_instance = dog_details_updated.save(commit=False)
                 dog_instance.is_adopted = False
                 dog_instance.is_disable = True if request.POST.get('is_disable')=='on' else False
-                dog_instance.is_adoption_ready = False if dog_instance.is_disable else True
+                dog_instance.is_adoption_ready = True if not dog_instance.is_disable and type == 'stray' else False
                 dog_instance.is_featured = False
                 dog_instance.save() # saving dog in the Dogs model
                 
@@ -105,7 +104,6 @@ def report_dogs_form_view(request, type):
                     dog_id = dog.dog_id
                 if type == "missing":
                     if user_details.is_valid():
-                        print("user and dog validated")
                         user_name_p = request.POST.get('user_name')
                         user_contact_p = request.POST.get('user_contact')
                         print(user_name_p)
@@ -171,7 +169,7 @@ def adoption_view(request):
     context['adoption_dog_form'] = adoption_dog_form
     context['adoption_user_form'] = adoption_user_form
     context['all_breeds'] = Breed.objects.all()
-    context['all_dogs'] = Dogs.objects.filter(is_featured=True, is_adoption_ready=True, is_adopted=False)
+    context['all_dogs'] = Dogs.objects.filter(is_adoption_ready=True, is_adopted=False)
     context['filtered_dogs'] = request.session.get(
         'filtered_dogs',
         Dogs.objects.filter(is_featured=True, is_adoption_ready=True, is_adopted=False)

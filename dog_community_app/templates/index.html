@@ -184,8 +184,8 @@
                 <div class="service-item bg-white text-center h-100 p-4 p-xl-5">
                     <img class="img-fluid mb-4" src="{%static "assets/img/icon-1.png" %}" alt="">
                     <h4 class="mb-3 service-title">Adoption</h4>
-                    <p class="mb-4 service-desc">Tempor ut dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed vero dolor duo.</p>
-                    <a class="btn btn-outline-primary px-3 service-button" href="">
+                    <p class="mb-4 service-desc">User friendly space to adopt a dog from the available dog list</p>
+                    <a href="{% url 'adoption' %}" class="btn btn-outline-primary px-3 service-button" href="">
                         Learn More
                         <div class="d-inline-flex btn-sm-square bg-primary text-white rounded-circle ms-2">
                             <i class="fa fa-arrow-right"></i>
@@ -197,8 +197,8 @@
                 <div class="service-item bg-white text-center h-100 p-4 p-xl-5">
                     <img class="img-fluid mb-4" src="{%static "assets/img/icon-2w.png" %}" alt="">
                     <h4 class="mb-3 service-title">Reporting a dog</h4>
-                    <p class="mb-4 service-desc">Tempor ut dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed vero dolor duo.</p>
-                    <a class="btn btn-outline-primary px-3 service-button" href="">
+                    <p class="mb-4 service-desc">Report a missing or stray dog and let us help in creating a better world</p>
+                    <a href="/report-dogs/missing" class="btn btn-outline-primary px-3 service-button">
                         Learn More
                         <div class="d-inline-flex btn-sm-square bg-primary text-white rounded-circle ms-2">
                             <i class="fa fa-arrow-right"></i>
@@ -210,8 +210,8 @@
                 <div class="service-item bg-white text-center h-100 p-4 p-xl-5">
                     <img class="img-fluid mb-4" src="{%static "assets/img/icon-3.png" %}" alt="">
                     <h4 class="mb-3 service-title">Meetups</h4>
-                    <p class="mb-4 service-desc">Tempor ut dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed vero dolor duo.</p>
-                    <a class="btn btn-outline-primary px-3 service-button" href="">
+                    <p class="mb-4 service-desc">Community meetups where dogs enjoy and people make new connections</p>
+                    <a href="{% url 'meetup' %}" class="btn btn-outline-primary px-3 service-button">
                         Learn More
                         <div class="d-inline-flex btn-sm-square bg-primary text-white rounded-circle ms-2">
                             <i class="fa fa-arrow-right"></i>
@@ -223,8 +223,8 @@
                 <div class="service-item bg-white text-center h-100 p-4 p-xl-5">
                     <img class="img-fluid mb-4" src="{%static "assets/img/icon-4.png" %}" alt="">
                     <h4 class="mb-3">Breed Info</h4>
-                    <p class="mb-4">Tempor ut dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed vero dolor duo.</p>
-                    <a class="btn btn-outline-primary px-3" href="">
+                    <p class="mb-4">Get to know about various breeds collated at one place</p>
+                    <a class="btn btn-outline-primary px-3" href="{% url 'breed-info' %}">
                         Learn More
                         <div class="d-inline-flex btn-sm-square bg-primary text-white rounded-circle ms-2">
                             <i class="fa fa-arrow-right"></i>
@@ -238,32 +238,34 @@
 <!-- Service End -->
 
 <!-- Adopt Start -->
-<div class="container-fluid adopt my-5 py-5" data-parallax="scroll" data-image-src="{%static "assets/img/carousel-2.jpg" %}">
+<div class="container-fluid my-5 py-5 parallax-adopt">
     <div class="container py-5">
         <div class="row g-5 align-items-center">
             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                 <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">Adopt Now</div>
                 <h1 class="display-6 text-white mb-5">Thanks For The Results Achieved With You</h1>
-                <p class="text-white-50 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                <p class="text-white-50 mb-0">So far, 1000 people have adopted their dog from our platform you can be the next. Hit the adopt now button and bring a new home to a dog.</p>
             </div>
             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                 <div class="h-100 bg-white p-5">
-                    <form>
+                    <form class="adopt-form" method="post" action="{% url 'adoption'%}">
                         <div class="row g-3">
+                            <datalist id="dogs_list" >
+                                {% for dog in all_dogs %}
+                                    <option value="{{dog.dog_name}}"/>
+                                {% endfor %}
+                            </datalist>
+                            {% for field in adoption_dog_form%}
+                                {{field}}
+                                {{field.errors}}
+                            {% endfor%}
+                            {% for field in adoption_user_form%}
+                                {{field}}
+                                {{field.errors}}
+                            {% endfor%}
+                            <input type="hidden" name="action-adopt" value="action-adopt"/>
                             <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control bg-light border-0" id="name" placeholder="Your Name">
-                                    <label for="name">Your Name</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control bg-light border-0" id="email" placeholder="Your Email">
-                                    <label for="email">Your Email address</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary px-5" style="height: 60px;">
+                                <button class="btn btn-primary px-5" style="height: 60px;" type="submit">
                                     Adopt Now
                                     <div class="d-inline-flex btn-sm-square bg-white text-primary rounded-circle ms-2">
                                         <i class="fa fa-arrow-right"></i>
@@ -279,11 +281,10 @@
 </div>
 <!-- Adopt End -->
 
-
 <!-- Team Start -->
 <div class="container-xxl py-5">
     <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" data-wow-duration="2s" style="max-width: 500px;">
             <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">Team Members</div>
             <h1 class="display-6 mb-5">Let's Meet With Our Ordinary Soldiers</h1>
         </div>
